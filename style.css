@@ -10,6 +10,8 @@
   --accent:         #25D366;
   --accent-hover:   #1EBE57;
   --accent-dark:    #128C7E;
+  --orange:         #E87019;
+  --orange-hover:   #CF5E0E;
   --surface:        #F5F7FA;
   --surface-2:      #EAECF0;
   --white:          #FFFFFF;
@@ -88,22 +90,24 @@ p  { font-size: 1.05rem; color: var(--text-muted); }
    HEADER
    ============================================ */
 header {
-  background: var(--primary);
-  padding: 16px 24px;
+  background: #FFFFFF;
+  padding: 14px 24px;
   text-align: center;
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid var(--primary-light);
+  border-bottom: 1px solid #E0E6ED;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 .header-logo {
-  color: var(--white);
-  font-size: 1.2rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.header-logo span { color: var(--accent); }
+.header-logo .logo-img {
+  max-height: 72px;
+  width: auto;
+}
 
 /* ============================================
    HERO SECTION
@@ -124,8 +128,8 @@ header {
 }
 .hero-badge {
   display: inline-block;
-  background: rgba(37,211,102,0.18);
-  color: var(--accent);
+  background: rgba(232,112,25,0.18);
+  color: var(--orange);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -133,10 +137,22 @@ header {
   padding: 6px 16px;
   border-radius: 50px;
   margin-bottom: 20px;
-  border: 1px solid rgba(37,211,102,0.3);
+  border: 1px solid rgba(232,112,25,0.4);
 }
 .hero h1 { color: var(--white); margin-bottom: 20px; }
-.hero h1 span { color: var(--accent); }
+.hero h1 span { color: var(--orange); }
+.hero-phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--orange);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.hero-phone svg { width: 18px; height: 18px; }
 .hero-subtitle {
   color: rgba(255,255,255,0.78);
   font-size: 1.1rem;
@@ -175,7 +191,7 @@ section { padding: 72px 24px; }
 .container { max-width: 1100px; margin: 0 auto; }
 .section-tag {
   display: inline-block;
-  color: var(--accent-dark);
+  color: var(--orange);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -184,6 +200,38 @@ section { padding: 72px 24px; }
 }
 .section-title { color: var(--text-dark); margin-bottom: 16px; }
 .section-subtitle { color: var(--text-muted); font-size: 1.05rem; max-width: 600px; }
+
+/* ============================================
+   DOR — PAIN POINTS
+   ============================================ */
+.pain-points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 520px;
+  margin: 28px auto 36px;
+  text-align: left;
+}
+.pain-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(220, 38, 38, 0.06);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+.pain-dot {
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #DC2626;
+  margin-top: 5px;
+}
 
 /* ============================================
    DOR / AGITAÇÃO
@@ -210,6 +258,7 @@ section { padding: 72px 24px; }
   padding: 36px 28px;
   text-align: center;
   border: 1px solid var(--surface-2);
+  border-top: 3px solid var(--orange);
   transition: transform var(--transition), box-shadow var(--transition);
 }
 .card:hover { transform: translateY(-6px); box-shadow: var(--card-shadow); }
@@ -223,7 +272,7 @@ section { padding: 72px 24px; }
   justify-content: center;
   margin: 0 auto 20px;
 }
-.card-icon svg { width: 32px; height: 32px; color: var(--accent); }
+.card-icon svg { width: 32px; height: 32px; color: var(--orange); }
 .card h3 { color: var(--text-dark); margin-bottom: 10px; }
 .card p { font-size: 0.95rem; }
 
@@ -232,6 +281,9 @@ section { padding: 72px 24px; }
    ============================================ */
 .beneficios { background: var(--primary); text-align: center; }
 .beneficios .section-title { color: var(--white); }
+
+
+
 .beneficios-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -251,7 +303,7 @@ section { padding: 72px 24px; }
 .beneficio-check {
   width: 28px;
   height: 28px;
-  background: var(--accent);
+  background: var(--orange);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -290,13 +342,13 @@ section { padding: 72px 24px; }
   top: 52px;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
+  background: linear-gradient(to bottom, var(--orange), transparent);
 }
 .step-num {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  background: linear-gradient(135deg, var(--orange) 0%, var(--orange-hover) 100%);
   color: white;
   font-size: 1.3rem;
   font-weight: 900;
@@ -304,7 +356,7 @@ section { padding: 72px 24px; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+  box-shadow: 0 4px 16px rgba(232,112,25,0.35);
 }
 .step-content h3 { font-size: 1.15rem; color: var(--text-dark); margin-bottom: 6px; }
 .step-content p { font-size: 0.95rem; }
@@ -323,6 +375,26 @@ section { padding: 72px 24px; }
   margin: 0 auto 40px;
   max-width: 520px;
 }
+.footer-logo-wrap { margin-bottom: 24px; }
+.footer-logo-img {
+  max-height: 56px;
+  width: auto;
+  margin: 0 auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+.footer-phone-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--orange);
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+}
+.footer-phone-display svg { width: 28px; height: 28px; }
 .footer-bottom {
   margin-top: 56px;
   padding-top: 24px;

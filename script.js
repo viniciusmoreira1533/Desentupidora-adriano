@@ -80,7 +80,10 @@ window.addEventListener('scroll', () => {
 // CONSOLE — info de customização
 // ============================================
 console.info(
-  '%cDesentupidora-adriano%c\nSubstitua 5511999999999 pelo número real de WhatsApp.',
+  '%cSuper desentupidora%c\nWhatsApp atualizado.',
   'color:#25D366;font-weight:bold;font-size:14px;',
   'color:#6B7280;font-size:12px;'
 );
+
+
+
