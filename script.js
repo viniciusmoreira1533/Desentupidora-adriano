@@ -15,7 +15,7 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, observerOptions);
 
-document.querySelectorAll('.card, .beneficio-item, .timeline-step').forEach(el => {
+document.querySelectorAll('.card, .beneficio-item, .timeline-step, .faq-item, .cobertura-block, .pain-item').forEach(el => {
   el.style.opacity = '0';
   el.style.transform = 'translateY(28px)';
   el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
@@ -77,11 +77,25 @@ window.addEventListener('scroll', () => {
 })();
 
 // ============================================
+// FAQ ACCORDION
+// ============================================
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isActive = item.classList.contains('active');
+    // Close all
+    document.querySelectorAll('.faq-item.active').forEach(i => i.classList.remove('active'));
+    // Toggle current
+    if (!isActive) item.classList.add('active');
+  });
+});
+
+// ============================================
 // CONSOLE — info de customização
 // ============================================
 console.info(
-  '%cSuper desentupidora%c\nWhatsApp atualizado.',
-  'color:#25D366;font-weight:bold;font-size:14px;',
+  '%cSuper Desentupidora%c\nSEO copy atualizada.',
+  'color:#E87019;font-weight:bold;font-size:14px;',
   'color:#6B7280;font-size:12px;'
 );
 

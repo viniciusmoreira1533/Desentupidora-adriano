@@ -465,6 +465,108 @@ section { padding: 72px 24px; }
 }
 
 /* ============================================
+   FAQ - PERGUNTAS FREQUENTES
+   ============================================ */
+.faq { background: var(--white); }
+.faq .section-title { text-align: center; margin-bottom: 48px; }
+.faq-list {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.faq-item {
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: box-shadow var(--transition);
+}
+.faq-item:hover { box-shadow: var(--card-shadow); }
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  gap: 16px;
+}
+.faq-question h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+.faq-chevron {
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  color: var(--orange);
+  transition: transform var(--transition);
+}
+.faq-item.active .faq-chevron { transform: rotate(180deg); }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  padding: 0 24px;
+  background: var(--white);
+}
+.faq-item.active .faq-answer {
+  max-height: 300px;
+  padding: 20px 24px;
+}
+.faq-answer p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   ATENDIMENTO LOCAL / COBERTURA
+   ============================================ */
+.atendimento-local { background: var(--surface); }
+.atendimento-local .section-title { text-align: center; margin-bottom: 16px; }
+.atendimento-local .section-subtitle { margin: 0 auto 40px; text-align: center; }
+.cobertura-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.cobertura-block {
+  background: var(--white);
+  border: 1px solid var(--surface-2);
+  border-top: 3px solid var(--orange);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+}
+.cobertura-block h3 {
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+.cobertura-block p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+.cobertura-closing {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+.atendimento-local .btn-cta { display: block; max-width: 460px; margin: 0 auto; text-align: center; }
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
@@ -472,7 +574,10 @@ section { padding: 72px 24px; }
   .hero  { padding: 64px 20px 56px; }
   .cards-grid { grid-template-columns: 1fr; }
   .beneficios-list { grid-template-columns: 1fr; }
+  .cobertura-grid { grid-template-columns: 1fr; }
   .btn-cta { padding: 16px 28px; font-size: 0.95rem; }
   .whatsapp-float { bottom: 20px; right: 20px; width: 56px; height: 56px; }
   .timeline-step::after { left: 22px; }
+  .faq-question { padding: 16px 18px; }
+  .faq-question h3 { font-size: 0.95rem; }
 }
