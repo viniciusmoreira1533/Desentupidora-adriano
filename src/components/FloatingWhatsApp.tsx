@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { WhatsAppIcon } from "./icons/WhatsAppIcon";
 
 interface Props {
@@ -5,11 +6,26 @@ interface Props {
 }
 
 export default function FloatingWhatsApp({ onClick }: Props) {
+  const [formVisible, setFormVisible] = useState(false);
+
+  useEffect(() => {
+    const formSection = document.getElementById("agende");
+    if (!formSection) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setFormVisible(entry.isIntersecting),
+      { threshold: 0.08 },
+    );
+
+    observer.observe(formSection);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="fixed bottom-6 right-6 z-[150] flex flex-col items-end gap-3">
+    <div className={`floating-whatsapp-wrap fixed bottom-6 right-6 z-[150] flex flex-col items-end gap-3 ${formVisible ? "floating-whatsapp-hidden" : ""}`}>
       {/* Preview message bubble */}
       <div
-        className="bg-[#1a1a1a] border border-primary/30 text-white text-xs rounded-2xl rounded-br-sm px-4 py-2.5 shadow-lg max-w-[200px] text-right animate-in slide-in-from-bottom-2 duration-500"
+        className="floating-whatsapp-preview bg-[#1a1a1a] border border-primary/30 text-white text-xs rounded-2xl rounded-br-sm px-4 py-2.5 shadow-lg max-w-[200px] text-right animate-in slide-in-from-bottom-2 duration-500"
         style={{ animationDelay: "3s", opacity: 0, animationFillMode: "forwards" }}
       >
         <p className="font-medium">Agende uma conversa! 👋</p>

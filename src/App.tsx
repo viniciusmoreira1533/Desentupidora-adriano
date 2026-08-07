@@ -6,7 +6,7 @@ const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade.tsx"));
 
 const App = () => (
-  <BrowserRouter>
+  <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center">Carregando...</div>}>
       <Routes>
         <Route path="/" element={<Index />} />

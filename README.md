@@ -6,7 +6,7 @@ Landing page de conversão da Canis Marketing para **marketing e anúncios para 
 
 - Vite + React 18 + TypeScript + Tailwind CSS + shadcn/ui
 - GTM `GTM-5R3B9PKC` (injetado no `vite.config.ts`)
-- Identidade visual: LP de performance da Canis (fundo escuro, verde `#2ECC5F`, roxo `#6E63C7`, Inter)
+- Identidade visual própria do nicho: linguagem industrial/emergencial, azul operacional, laranja de alta visibilidade e verde reservado para sinais de resultado. Tipografia Archivo + Inter.
 
 ## Rodar local
 

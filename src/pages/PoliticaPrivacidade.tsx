@@ -1,6 +1,6 @@
 export default function PoliticaPrivacidade() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="privacy-page min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="border-b border-border/50 py-4 px-4">
         <div className="container mx-auto max-w-3xl flex items-center justify-between">

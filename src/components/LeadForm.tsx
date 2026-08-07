@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader2, User, Phone, MapPin, ChevronDown, Check } from "lucide-react";
+import { Loader2, User, Phone, MapPin, Check } from "lucide-react";
 import { WhatsAppIcon } from "./icons/WhatsAppIcon";
 
 const WEBHOOK_URL = "https://n8nwebhook.server2.wolframe.app/webhook/desentupidora-canis";
