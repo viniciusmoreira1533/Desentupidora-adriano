@@ -28,8 +28,8 @@ export default function PoliticaPrivacidade() {
               A <strong className="text-foreground">Canis Marketing</strong> ("nós", "nosso" ou "empresa") é uma assessoria de marketing digital
               especializada em marketing e anúncios para desentupidoras: Google Maps, Google Ads, Meta Ads e páginas de alta conversão.
               Nosso site institucional é{" "}
-              <a href="https://desentupidora.canis.marketing" className="text-primary underline hover:text-primary/80 transition-colors">
-                desentupidora.canis.marketing
+              <a href="https://marketingdesentupidora.canis.marketing" className="text-primary underline hover:text-primary/80 transition-colors">
+                marketingdesentupidora.canis.marketing
               </a>.
             </p>
           </section>

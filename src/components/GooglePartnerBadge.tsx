@@ -20,7 +20,7 @@ export default function GooglePartnerBadge({ size = "md", withCaption = false, c
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Perfil Google Partner da Canis Marketing"
-        className="inline-block transition-transform hover:scale-105"
+        className="inline-block rounded-lg transition-transform hover:scale-105"
       >
         <img
           src="https://www.gstatic.com/partners/badge/images/2026/PartnerBadgeClickable.svg"

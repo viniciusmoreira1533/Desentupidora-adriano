@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Loader2, User, Phone, MapPin, Check } from "lucide-react";
 import { WhatsAppIcon } from "./icons/WhatsAppIcon";
+import { pushDataLayerEvent } from "@/lib/analytics";
 
 const WEBHOOK_URL = "https://n8nwebhook.server2.wolframe.app/webhook/desentupidora-canis";
 const WHATSAPP_NUMBER = "5516976158102";
@@ -11,11 +12,6 @@ const AD_STATUS_OPTIONS = [
   { value: "ambos", label: "Sim, nos dois" },
   { value: "nao", label: "Ainda não anuncio" },
 ];
-
-function pushEvent(event: string) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event });
-}
 
 function formatPhone(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -33,8 +29,15 @@ export default function LeadForm() {
   const [adStatus, setAdStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const formStarted = useRef(false);
 
   const rawPhone = phone.replace(/\D/g, "");
+
+  const handleFormStart = () => {
+    if (formStarted.current) return;
+    formStarted.current = true;
+    pushDataLayerEvent("formulario_iniciado", { formulario: "desentupidora" });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +51,7 @@ export default function LeadForm() {
     setLoading(true);
 
     try {
-      await fetch(WEBHOOK_URL, {
+      const response = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -58,23 +61,31 @@ export default function LeadForm() {
           anuncia: adStatus,
         }),
       });
+
+      if (!response.ok) throw new Error(`Webhook respondeu ${response.status}`);
+
+      const eventParameters = {
+        formulario: "desentupidora",
+        status_anuncio: adStatus,
+      };
+      pushDataLayerEvent("lead-enviado", eventParameters);
+      pushDataLayerEvent("lead-desentupidora-enviado", eventParameters);
+
+      const statusLabel = AD_STATUS_OPTIONS.find((o) => o.value === adStatus)?.label ?? adStatus;
+      const msg = encodeURIComponent(
+        `Oi, sou o ${name.trim()}, da desentupidora em ${city.trim()}. Quero agendar uma conversa sobre marketing para minha empresa. ${statusLabel}.`
+      );
+      pushDataLayerEvent("whatsapp_aberto", { origem: "formulario_desentupidora" });
+      window.open(`https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${msg}`, "_blank", "noopener");
     } catch {
-      // no-cors may throw — continue to redirect anyway
+      setError("Não foi possível enviar agora. Tente novamente em instantes.");
+    } finally {
+      setLoading(false);
     }
-
-    pushEvent("lead-desentupidora-enviado");
-
-    const statusLabel = AD_STATUS_OPTIONS.find((o) => o.value === adStatus)?.label ?? adStatus;
-    const msg = encodeURIComponent(
-      `Oi, sou o ${name.trim()}, da desentupidora em ${city.trim()}. Quero agendar uma conversa sobre marketing para minha empresa. ${statusLabel}.`
-    );
-    window.open(`https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${msg}`, "_blank", "noopener");
-
-    setLoading(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+    <form onSubmit={handleSubmit} onFocus={handleFormStart} className="space-y-4 text-left">
       {/* Name */}
       <div className="relative">
         <label htmlFor="lead-name" className="sr-only">Seu nome</label>

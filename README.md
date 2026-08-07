@@ -34,5 +34,5 @@ Após o envio, o lead é redirecionado para o WhatsApp da Canis (`5516976158102`
 ## Deploy
 
 - Vercel (projeto: `canis-lp-desentupidora-2026-producao`)
-- Domínio definitivo previsto: `desentupidora.canis.marketing`
+- Domínio definitivo: `marketingdesentupidora.canis.marketing`
 - `vercel.json` já inclui headers de segurança e rewrites para SPA

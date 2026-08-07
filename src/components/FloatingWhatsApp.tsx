@@ -7,22 +7,30 @@ interface Props {
 
 export default function FloatingWhatsApp({ onClick }: Props) {
   const [formVisible, setFormVisible] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(true);
 
   useEffect(() => {
     const formSection = document.getElementById("agende");
-    if (!formSection) return;
+    const heroSection = document.getElementById("inicio");
+    if (!formSection || !heroSection) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setFormVisible(entry.isIntersecting),
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target.id === "agende") setFormVisible(entry.isIntersecting);
+          if (entry.target.id === "inicio") setHeroVisible(entry.isIntersecting);
+        });
+      },
       { threshold: 0.08 },
     );
 
     observer.observe(formSection);
+    observer.observe(heroSection);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div className={`floating-whatsapp-wrap fixed bottom-6 right-6 z-[150] flex flex-col items-end gap-3 ${formVisible ? "floating-whatsapp-hidden" : ""}`}>
+    <div className={`floating-whatsapp-wrap fixed bottom-6 right-6 z-[150] flex flex-col items-end gap-3 ${formVisible || heroVisible ? "floating-whatsapp-hidden" : ""}`}>
       {/* Preview message bubble */}
       <div
         className="floating-whatsapp-preview bg-[#1a1a1a] border border-primary/30 text-white text-xs rounded-2xl rounded-br-sm px-4 py-2.5 shadow-lg max-w-[200px] text-right animate-in slide-in-from-bottom-2 duration-500"

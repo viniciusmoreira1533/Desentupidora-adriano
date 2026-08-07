@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://desentupidora.canis.marketing/sitemap.xml
+Sitemap: https://marketingdesentupidora.canis.marketing/sitemap.xml

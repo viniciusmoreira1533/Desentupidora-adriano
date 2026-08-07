@@ -1,5 +1,7 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import canisLogoSm from "@/assets/canis_logo_sm.webp";
+import contactOperationImage from "@/assets/imagens/operacao-chamada.webp";
+import localSearchImage from "@/assets/imagens/busca-local.webp";
 import {
   ArrowDownRight,
   Check,
@@ -7,10 +9,8 @@ import {
   MapPin,
   Menu,
   MessageCircle,
-  Navigation,
   PhoneCall,
   Search,
-  Target,
   TrendingUp,
   X,
   Zap,
@@ -24,6 +24,7 @@ import {
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import GooglePartnerBadge from "@/components/GooglePartnerBadge";
 import LeadForm from "@/components/LeadForm";
+import { pushDataLayerEvent } from "@/lib/analytics";
 
 const GoogleReviewsWidget = lazy(() => import("@/components/GoogleReviewsWidget"));
 
@@ -102,59 +103,72 @@ const faqs = [
   },
 ];
 
-function DemandMap() {
+function HeroCampaignVisual() {
   return (
-    <div className="demand-console" aria-label="Representação visual de buscas urgentes por desentupidora">
-      <div className="console-topbar">
-        <div className="console-status"><span /> DEMANDA LOCAL AO VIVO</div>
-        <div className="console-city"><Navigation size={14} /> SUA REGIÃO</div>
-      </div>
+    <figure className="hero-campaign-visual" aria-labelledby="hero-visual-caption">
+      <img
+        src={localSearchImage}
+        alt="Profissional de desentupimento usando o celular ao lado do veículo e equipamentos de atendimento"
+        width="2000"
+        height="1500"
+        loading="eager"
+      />
+      <div className="hero-image-wash" aria-hidden="true" />
 
-      <div className="search-query">
-        <Search size={18} />
-        <span>desentupidora 24 horas perto de mim</span>
-        <kbd>AGORA</kbd>
-      </div>
-
-      <div className="map-stage">
-        <div className="map-road road-a" />
-        <div className="map-road road-b" />
-        <div className="map-road road-c" />
-        <div className="map-label label-a">CENTRO</div>
-        <div className="map-label label-b">ZONA NORTE</div>
-        <div className="map-label label-c">SUA BASE</div>
-        <div className="map-pin pin-a"><span /></div>
-        <div className="map-pin pin-b"><span /></div>
-        <div className="map-pin pin-c"><span /></div>
-        <div className="map-target"><Target size={30} /></div>
-
-        <div className="incoming-call">
-          <div className="call-icon"><PhoneCall size={20} /></div>
+      <div className="visual-search-card">
+        <div className="visual-search-query">
+          <Search size={18} aria-hidden="true" />
+          <span>desentupidora 24h perto de mim</span>
+        </div>
+        <div className="visual-search-result">
+          <div className="visual-result-pin"><MapPin size={20} aria-hidden="true" /></div>
           <div>
-            <small>NOVO CHAMADO</small>
-            <strong>Ligação recebida</strong>
-            <span>Origem: Google Ads</span>
+            <small>ANÚNCIO LOCAL</small>
+            <strong>Sua empresa no momento certo</strong>
+            <span>Atendimento 24h na sua região</span>
           </div>
-          <div className="call-live">AO VIVO</div>
         </div>
       </div>
 
-      <div className="console-metrics">
-        <div><strong>17</strong><span>buscas urgentes</span></div>
-        <div><strong>4,9★</strong><span>confiança local</span></div>
-        <div><strong>&lt; 1 min</strong><span>até o contato</span></div>
+      <div className="visual-conversion-path" aria-hidden="true">
+        <span />
       </div>
-    </div>
+
+      <div className="visual-call-card">
+        <div className="visual-call-icon"><PhoneCall size={20} aria-hidden="true" /></div>
+        <div>
+          <small>NOVO CONTATO VIA GOOGLE</small>
+          <strong>Cliente solicitando atendimento</strong>
+          <span>Busca transformada em oportunidade</span>
+        </div>
+        <i aria-hidden="true" />
+      </div>
+
+      <figcaption id="hero-visual-caption">
+        <span>Busca com intenção</span><i aria-hidden="true" /><span>Chamado recebido</span>
+      </figcaption>
+    </figure>
   );
 }
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("inicio");
+  const [reviewsReady, setReviewsReady] = useState(false);
+  const reviewsTriggerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToSection = useCallback((id: string) => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: id === "agende" ? "clicou no CTA" : "navegacao_landing_page" });
+  const scrollToSection = useCallback((id: string, source = "navegacao") => {
+    if (id === "agende") {
+      pushDataLayerEvent("clicou no CTA", {
+        destino: "formulario_desentupidora",
+        origem: source,
+      });
+    } else {
+      pushDataLayerEvent("navegacao_landing_page", {
+        destino: id,
+        origem: source,
+      });
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMobileMenuOpen(false);
   }, []);
@@ -173,14 +187,49 @@ const Index = () => {
       if (element) observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    document.documentElement.classList.add("reveal-ready");
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("revealed");
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px" },
+    );
+
+    document.querySelectorAll("[data-reveal]").forEach((element) => revealObserver.observe(element));
+
+    return () => {
+      observer.disconnect();
+      revealObserver.disconnect();
+      document.documentElement.classList.remove("reveal-ready");
+    };
   }, []);
+
+  useEffect(() => {
+    const trigger = reviewsTriggerRef.current;
+    if (!trigger || reviewsReady) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setReviewsReady(true);
+        observer.disconnect();
+      },
+      { rootMargin: "500px 0px" },
+    );
+
+    observer.observe(trigger);
+    return () => observer.disconnect();
+  }, [reviewsReady]);
 
   return (
     <main className="landing-root">
       <header className="site-header">
         <div className="site-header-inner">
-          <button className="brand-lockup" onClick={() => scrollToSection("inicio")} aria-label="Voltar ao início">
+          <button className="brand-lockup" onClick={() => scrollToSection("inicio", "logo_header")} aria-label="Voltar ao início">
             <img src={canisLogoSm} alt="Canis Marketing" width="42" height="42" />
             <span><strong>CANIS</strong><small>MARKETING PARA DESENTUPIDORAS</small></span>
           </button>
@@ -189,7 +238,7 @@ const Index = () => {
             {navLinks.map((link) => (
               <button
                 key={link.href}
-                onClick={() => scrollToSection(link.href)}
+                onClick={() => scrollToSection(link.href, "menu_desktop")}
                 className={activeSection === link.href ? "active" : ""}
               >
                 {link.label}
@@ -198,7 +247,7 @@ const Index = () => {
           </nav>
 
           <div className="header-actions">
-            <button className="header-cta" onClick={() => scrollToSection("agende")}>Agendar conversa</button>
+            <button className="header-cta" onClick={() => scrollToSection("agende", "header")}>Agendar conversa</button>
             <button
               className="menu-button"
               onClick={() => setMobileMenuOpen((open) => !open)}
@@ -213,31 +262,33 @@ const Index = () => {
         {mobileMenuOpen && (
           <nav className="mobile-nav" aria-label="Navegação mobile">
             {navLinks.map((link) => (
-              <button key={link.href} onClick={() => scrollToSection(link.href)}>{link.label}</button>
+              <button key={link.href} onClick={() => scrollToSection(link.href, "menu_mobile")}>{link.label}</button>
             ))}
-            <button className="mobile-nav-cta" onClick={() => scrollToSection("agende")}>Agendar conversa</button>
+            <button className="mobile-nav-cta" onClick={() => scrollToSection("agende", "menu_mobile")}>Agendar conversa</button>
           </nav>
         )}
       </header>
 
       <section id="inicio" className="hero-section">
-        <div className="safety-stripe" aria-hidden="true" />
         <div className="hero-grid">
           <div className="hero-copy">
             <div className="hero-kicker"><span>ESPECIALIDADE CANIS</span> MARKETING PARA DESENTUPIDORAS</div>
-            <h1>Mais chamados para quem resolve problemas <em>agora.</em></h1>
+            <h1>Mais chamados<br className="hero-title-break" />{" "}para quem resolve<br className="hero-title-break" />{" "}problemas <em>agora.</em></h1>
             <p className="hero-lead">
               Sua desentupidora precisa aparecer quando o cliente pesquisa, transmitir confiança em segundos e facilitar a ligação ou o WhatsApp.
             </p>
-            <p className="hero-urgency">
-              <Clock3 size={20} /> Quando o cano estoura às 3h da manhã, quem aparece no Google leva o chamado.
-            </p>
 
             <div className="hero-actions">
-              <button className="primary-cta" onClick={() => scrollToSection("agende")}>
+              <button className="primary-cta" onClick={() => scrollToSection("agende", "hero")}>
                 Quero mais chamados <ArrowDownRight size={20} />
               </button>
-              <a className="text-cta" href="#metodo">Ver como funciona <span>→</span></a>
+              <a
+                className="text-cta"
+                href="#metodo"
+                onClick={() => pushDataLayerEvent("navegacao_landing_page", { destino: "metodo", origem: "hero" })}
+              >
+                Ver como funciona <span>→</span>
+              </a>
             </div>
 
             <div className="hero-proof">
@@ -249,29 +300,18 @@ const Index = () => {
             </div>
           </div>
 
-          <DemandMap />
-        </div>
-
-        <div className="channel-rail">
-          <span>ESTRUTURA COMPLETA</span>
-          <strong>Google Maps</strong>
-          <i />
-          <strong>Google Ads</strong>
-          <i />
-          <strong>Página de conversão</strong>
-          <i />
-          <strong>Meta Ads</strong>
+          <HeroCampaignVisual />
         </div>
       </section>
 
       <section id="problema" className="problem-section">
         <div className="section-shell">
-          <div className="editorial-heading">
+          <div className="editorial-heading" data-reveal>
             <span className="section-index">01 / O MERCADO</span>
             <h2>Seu cliente não está pesquisando.<br /><em>Ele precisa resolver.</em></h2>
           </div>
 
-          <div className="urgency-sequence">
+          <div className="urgency-sequence" data-reveal>
             <article>
               <span>01</span>
               <div className="sequence-icon"><Zap size={26} /></div>
@@ -292,7 +332,7 @@ const Index = () => {
             </article>
           </div>
 
-          <div className="problem-manifesto">
+          <div className="problem-manifesto" data-reveal>
             <div>
               <small>O TRABALHO DA CANIS</small>
               <strong>Colocar sua empresa antes do concorrente e remover qualquer atrito até o contato.</strong>
@@ -308,7 +348,7 @@ const Index = () => {
 
       <section id="metodo" className="method-section">
         <div className="section-shell">
-          <div className="method-heading">
+          <div className="method-heading" data-reveal>
             <div>
               <span className="section-index light">02 / A ESTRUTURA</span>
               <h2>Três frentes.<br /><em>Um telefone tocando.</em></h2>
@@ -316,7 +356,7 @@ const Index = () => {
             <p>Uma rota simples para capturar demanda local, converter urgência e ampliar volume sem perder controle do custo por oportunidade.</p>
           </div>
 
-          <div className="operation-route">
+          <div className="operation-route" data-reveal>
             <div className="route-line" aria-hidden="true" />
             {phases.map((phase) => (
               <article className="phase-row" key={phase.number}>
@@ -338,16 +378,16 @@ const Index = () => {
             ))}
           </div>
 
-          <div className="method-cta-row">
+          <div className="method-cta-row" data-reveal>
             <div><MessageCircle size={24} /><span>Pronto para saber como isso funciona na sua cidade?</span></div>
-            <button className="primary-cta" onClick={() => scrollToSection("agende")}>Analisar minha região <ArrowDownRight size={20} /></button>
+            <button className="primary-cta" onClick={() => scrollToSection("agende", "metodo")}>Analisar minha região <ArrowDownRight size={20} /></button>
           </div>
         </div>
       </section>
 
       <section id="avaliacoes" className="proof-section">
         <div className="section-shell">
-          <div className="partner-panel">
+          <div className="partner-panel" data-reveal>
             <div className="partner-badge-wrap"><GooglePartnerBadge size="lg" /></div>
             <div className="partner-panel-copy">
               <span className="section-index">03 / CREDIBILIDADE</span>
@@ -359,20 +399,26 @@ const Index = () => {
             </div>
           </div>
 
-          <Suspense fallback={<div className="reviews-loading">Carregando avaliações...</div>}>
-            <GoogleReviewsWidget />
-          </Suspense>
+          <div ref={reviewsTriggerRef}>
+            {reviewsReady ? (
+              <Suspense fallback={<div className="reviews-loading">Carregando avaliações...</div>}>
+                <GoogleReviewsWidget />
+              </Suspense>
+            ) : (
+              <div className="reviews-loading">Avaliações reais da Canis</div>
+            )}
+          </div>
         </div>
       </section>
 
       <section className="fit-section">
         <div className="section-shell">
-          <div className="editorial-heading compact">
+          <div className="editorial-heading compact" data-reveal>
             <span className="section-index">04 / PARA QUEM É</span>
             <h2>Já anuncia ou vai começar?<br /><em>Temos um próximo passo claro.</em></h2>
           </div>
 
-          <div className="fit-grid">
+          <div className="fit-grid" data-reveal>
             <article className="fit-card diagnose">
               <div className="fit-card-top"><X size={24} /><span>DIAGNÓSTICO</span></div>
               <h3>Já anuncia e não está satisfeito?</h3>
@@ -399,11 +445,11 @@ const Index = () => {
       </section>
 
       <section id="faq" className="faq-section">
-        <div className="section-shell faq-shell">
+        <div className="section-shell faq-shell" data-reveal>
           <div className="faq-heading">
             <span className="section-index light">05 / DÚVIDAS</span>
             <h2>O que donos de desentupidora querem saber antes de anunciar.</h2>
-            <button className="outline-cta" onClick={() => scrollToSection("agende")}>Falar com a Canis</button>
+            <button className="outline-cta" onClick={() => scrollToSection("agende", "faq")}>Falar com a Canis</button>
           </div>
 
           <Accordion type="single" collapsible className="faq-list">
@@ -418,11 +464,25 @@ const Index = () => {
       </section>
 
       <section id="agende" className="contact-section">
-        <div className="section-shell contact-grid">
+        <div className="section-shell contact-grid" data-reveal>
           <div className="contact-copy">
             <span className="section-index light">06 / PRÓXIMO PASSO</span>
             <h2>Sua próxima chamada pode estar procurando uma desentupidora <em>agora.</em></h2>
             <p>Conte onde você atende e como anuncia hoje. Vamos analisar sua região e mostrar qual estrutura faz sentido para sua operação.</p>
+
+            <figure className="contact-operation-visual">
+              <img
+                src={contactOperationImage}
+                alt="Equipe de desentupimento recebendo uma chamada enquanto o atendimento de campo se prepara"
+                width="2000"
+                height="1500"
+                loading="lazy"
+              />
+              <figcaption>
+                <small>OPERAÇÃO EM MOVIMENTO</small>
+                <strong>Seu time atende. A Canis trabalha para o próximo chamado chegar.</strong>
+              </figcaption>
+            </figure>
 
             <div className="contact-promise">
               <div><Clock3 size={20} /><span><strong>Menos de 1 minuto</strong> para preencher</span></div>
@@ -441,7 +501,7 @@ const Index = () => {
         </div>
       </section>
 
-      <FloatingWhatsApp onClick={() => scrollToSection("agende")} />
+      <FloatingWhatsApp onClick={() => scrollToSection("agende", "whatsapp_flutuante")} />
 
       <footer className="site-footer">
         <div className="site-footer-inner">
@@ -450,7 +510,7 @@ const Index = () => {
             <div><strong>CANIS MARKETING</strong><span>Marketing para desentupidoras</span></div>
           </div>
           <p>© {new Date().getFullYear()} Canis Marketing. Todos os direitos reservados.</p>
-          <button onClick={() => scrollToSection("inicio")}>Voltar ao topo ↑</button>
+          <button onClick={() => scrollToSection("inicio", "rodape")}>Voltar ao topo ↑</button>
         </div>
       </footer>
     </main>
