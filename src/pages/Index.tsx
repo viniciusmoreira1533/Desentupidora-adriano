@@ -229,7 +229,7 @@ const Index = () => {
     <main className="landing-root">
       <header className="site-header">
         <div className="site-header-inner">
-          <button className="brand-lockup" onClick={() => scrollToSection("inicio", "logo_header")} aria-label="Voltar ao início">
+          <button className="brand-lockup" onClick={() => scrollToSection("inicio", "logo_header")} aria-label="CANIS — Voltar ao início">
             <img src={canisLogoSm} alt="Canis Marketing" width="42" height="42" />
             <span><strong>CANIS</strong><small>MARKETING PARA DESENTUPIDORAS</small></span>
           </button>
