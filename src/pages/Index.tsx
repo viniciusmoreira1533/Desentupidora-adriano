@@ -3,7 +3,7 @@ import canisLogoSm from "@/assets/canis_logo_sm.webp";
 import contactOperationImage from "@/assets/imagens/operacao-chamada.webp";
 import localSearchImage from "@/assets/imagens/busca-local.webp";
 import {
-  ArrowDownRight,
+  ArrowRight,
   Check,
   Clock3,
   MapPin,
@@ -120,60 +120,51 @@ function HeroCampaignVisual() {
     <figure className="hero-campaign-visual" aria-labelledby="hero-visual-caption">
       <img
         src={localSearchImage}
-        alt="Profissional de desentupimento usando o celular ao lado do veículo e equipamentos de atendimento"
+        alt="Profissional de desentupimento pronto para atendimento com busca no celular"
         width="2000"
         height="1500"
         loading="eager"
       />
       <div className="hero-image-wash" aria-hidden="true" />
 
-      <div className="phone-screen-overlay" aria-hidden="true">
-        <div className="phone-screen-search"><Search size={8} /><span>desentupidora 24h</span></div>
-        <div className="phone-screen-map">
-          <i className="phone-map-road phone-map-road-a" />
-          <i className="phone-map-road phone-map-road-b" />
-          <i className="phone-map-pin phone-map-pin-a" />
-          <i className="phone-map-pin phone-map-pin-b" />
-          <i className="phone-map-route" />
-        </div>
-        <div className="phone-screen-result">
-          <small>PERFIL ENCONTRADO</small>
-          <strong>Atendimento na região</strong>
-          <span>Ligação disponível agora</span>
-        </div>
+      {/* Selo superior de status da campanha */}
+      <div className="visual-live-badge">
+        <span className="live-dot" aria-hidden="true" />
+        <MapPin size={14} aria-hidden="true" />
+        <span>GOOGLE ADS + MAPS ATIVO</span>
       </div>
 
-      <div className="visual-search-card">
-        <div className="visual-search-query">
-          <Search size={18} aria-hidden="true" />
-          <span>desentupidora 24h perto de mim</span>
-        </div>
-        <div className="visual-search-result">
-          <div className="visual-result-pin"><MapPin size={20} aria-hidden="true" /></div>
-          <div>
-            <small>ANÚNCIO LOCAL</small>
-            <strong>Sua empresa no momento certo</strong>
-            <span>Atendimento 24h na sua região</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="visual-conversion-path" aria-hidden="true">
-        <span />
-      </div>
-
+      {/* Card de conversão da chamada (Dark Glassmorphism) */}
       <div className="visual-call-card">
-        <div className="visual-call-icon"><PhoneCall size={20} aria-hidden="true" /></div>
-        <div>
-          <small>NOVO CONTATO VIA GOOGLE</small>
-          <strong>Cliente solicitando atendimento</strong>
-          <span>Busca transformada em oportunidade</span>
+        <div className="visual-call-icon">
+          <PhoneCall size={22} aria-hidden="true" />
         </div>
-        <i aria-hidden="true" />
+        <div className="visual-call-info">
+          <div className="visual-call-head">
+            <small>NOVO CHAMADO VIA GOOGLE</small>
+            <span className="visual-time-tag">Resposta em &lt; 30s</span>
+          </div>
+          <strong>Cliente solicitando atendimento</strong>
+          <p>Busca qualificada convertida em ligação / WhatsApp</p>
+        </div>
+        <i className="status-indicator" aria-hidden="true" />
       </div>
 
       <figcaption id="hero-visual-caption">
-        <span>Busca com intenção</span><i aria-hidden="true" /><span>Chamado recebido</span>
+        <div className="flow-step">
+          <span className="step-num">1</span>
+          <span>Busca com Intenção</span>
+        </div>
+        <i className="flow-arrow" aria-hidden="true" />
+        <div className="flow-step">
+          <span className="step-num">2</span>
+          <span>Perfil Otimizado</span>
+        </div>
+        <i className="flow-arrow" aria-hidden="true" />
+        <div className="flow-step highlight">
+          <span className="step-num">3</span>
+          <span>Chamado Recebido</span>
+        </div>
       </figcaption>
     </figure>
   );
@@ -300,30 +291,35 @@ const Index = () => {
       <section id="inicio" className="hero-section">
         <div className="hero-grid">
           <div className="hero-copy">
-            <div className="hero-kicker"><span>ESPECIALIDADE CANIS</span> MARKETING PARA DESENTUPIDORAS</div>
-            <h1>Mais chamados<br className="hero-title-break" />{" "}para quem resolve<br className="hero-title-break" />{" "}problemas <em>agora.</em></h1>
+            <div className="hero-kicker">
+              <span>ESPECIALIDADE CANIS</span>
+              <small>MARKETING PARA DESENTUPIDORAS</small>
+            </div>
+            <h1>Mais chamados para quem resolve problemas <em>agora.</em></h1>
             <p className="hero-lead">
-              Sua desentupidora precisa aparecer quando o cliente pesquisa, transmitir confiança em segundos e facilitar a ligação ou o WhatsApp.
+              Sua desentupidora precisa aparecer no topo quando o cliente pesquisa no Google, transmitir autoridade imediata e facilitar o contato direto por ligação ou WhatsApp.
             </p>
 
             <div className="hero-actions">
               <button className="primary-cta" onClick={() => scrollToSection("agende", "hero")}>
-                Quero mais chamados <ArrowDownRight size={20} />
+                <span>Quero mais chamados</span>
+                <ArrowRight size={20} className="cta-icon" />
               </button>
               <a
                 className="text-cta"
                 href="#metodo"
                 onClick={() => pushDataLayerEvent("navegacao_landing_page", { destino: "metodo", origem: "hero" })}
               >
-                Ver como funciona <span>→</span>
+                <span>Ver como funciona</span>
+                <span className="arrow">→</span>
               </a>
             </div>
 
             <div className="hero-proof">
               <div className="proof-partner"><GooglePartnerBadge size="sm" /></div>
               <div className="proof-copy">
-                <strong>Agência Google Partner</strong>
-                <span>Certificação oficial e experiência real com o segmento</span>
+                <strong>Agência Google Partner Oficial</strong>
+                <span>Certificação confirmada pelo Google com alta performance comprovada no segmento</span>
               </div>
             </div>
           </div>
@@ -408,7 +404,10 @@ const Index = () => {
 
           <div className="method-cta-row" data-reveal>
             <div><MessageCircle size={24} /><span>Pronto para saber como isso funciona na sua cidade?</span></div>
-            <button className="primary-cta" onClick={() => scrollToSection("agende", "metodo")}>Analisar minha região <ArrowDownRight size={20} /></button>
+            <button className="primary-cta" onClick={() => scrollToSection("agende", "metodo")}>
+              <span>Analisar minha região</span>
+              <ArrowRight size={20} className="cta-icon" />
+            </button>
           </div>
         </div>
       </section>
