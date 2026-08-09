@@ -41,10 +41,6 @@ window.requestIdleCallback?window.requestIdleCallback(function(){(function(w,d,s
     rollupOptions: {
       output: {
         manualChunks: {
-          'radix-ui': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-slot',
-          ],
           'embla': ['embla-carousel-react', 'embla-carousel-autoplay'],
           'lucide': ['lucide-react'],
         }

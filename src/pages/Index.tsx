@@ -15,18 +15,32 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import GooglePartnerBadge from "@/components/GooglePartnerBadge";
 import LeadForm from "@/components/LeadForm";
 import { pushDataLayerEvent } from "@/lib/analytics";
 
 const GoogleReviewsWidget = lazy(() => import("@/components/GoogleReviewsWidget"));
+const FaqAccordion = lazy(() =>
+  import("@/components/ui/accordion").then((module) => ({
+    default: ({
+      items,
+      children,
+    }: {
+      items: { q: string; a: string }[];
+      children?: never;
+    }) => (
+      <module.Accordion type="single" collapsible className="faq-list">
+        {items.map((faq, index) => (
+          <module.AccordionItem key={faq.q} value={`faq-${index}`}>
+            <module.AccordionTrigger>{faq.q}</module.AccordionTrigger>
+            <module.AccordionContent>{faq.a}</module.AccordionContent>
+          </module.AccordionItem>
+        ))}
+      </module.Accordion>
+    ),
+  })),
+);
 
 const navLinks = [
   { label: "O problema", href: "problema" },
@@ -452,14 +466,9 @@ const Index = () => {
             <button className="outline-cta" onClick={() => scrollToSection("agende", "faq")}>Falar com a Canis</button>
           </div>
 
-          <Accordion type="single" collapsible className="faq-list">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={faq.q} value={`faq-${index}`}>
-                <AccordionTrigger>{faq.q}</AccordionTrigger>
-                <AccordionContent>{faq.a}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <Suspense fallback={<div className="faq-list">Carregando dúvidas...</div>}>
+            <FaqAccordion items={faqs} />
+          </Suspense>
         </div>
       </section>
 
