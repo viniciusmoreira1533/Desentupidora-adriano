@@ -25,10 +25,8 @@ const FaqAccordion = lazy(() =>
   import("@/components/ui/accordion").then((module) => ({
     default: ({
       items,
-      children,
     }: {
       items: { q: string; a: string }[];
-      children?: never;
     }) => (
       <module.Accordion type="single" collapsible className="faq-list">
         {items.map((faq, index) => (
@@ -128,6 +126,22 @@ function HeroCampaignVisual() {
         loading="eager"
       />
       <div className="hero-image-wash" aria-hidden="true" />
+
+      <div className="phone-screen-overlay" aria-hidden="true">
+        <div className="phone-screen-search"><Search size={8} /><span>desentupidora 24h</span></div>
+        <div className="phone-screen-map">
+          <i className="phone-map-road phone-map-road-a" />
+          <i className="phone-map-road phone-map-road-b" />
+          <i className="phone-map-pin phone-map-pin-a" />
+          <i className="phone-map-pin phone-map-pin-b" />
+          <i className="phone-map-route" />
+        </div>
+        <div className="phone-screen-result">
+          <small>PERFIL ENCONTRADO</small>
+          <strong>Atendimento na região</strong>
+          <span>Ligação disponível agora</span>
+        </div>
+      </div>
 
       <div className="visual-search-card">
         <div className="visual-search-query">

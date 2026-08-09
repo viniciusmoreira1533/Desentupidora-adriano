@@ -445,6 +445,114 @@
       radial-gradient(circle at 62% 46%, transparent 0 18%, rgba(5, 28, 40, 0.33) 68%);
   }
 
+  .phone-screen-overlay {
+    position: absolute;
+    z-index: 2;
+    top: 31%;
+    left: 37.5%;
+    width: 29%;
+    height: 42%;
+    padding: 5% 4% 4%;
+    border: 1px solid rgba(181, 229, 238, 0.6);
+    border-radius: 10% 10% 12% 12%;
+    background: #0b2b3b;
+    box-shadow: inset 0 0 0 2px rgba(2, 15, 24, 0.58), 0 6px 18px rgba(1, 10, 16, 0.3);
+    color: #eaf5f4;
+    overflow: hidden;
+    transform: rotate(6deg);
+    transform-origin: center;
+  }
+
+  .phone-screen-search {
+    position: relative;
+    z-index: 2;
+    min-height: 12%;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    gap: 5%;
+    border-radius: 999px;
+    background: rgba(245, 250, 248, 0.96);
+    color: #173443;
+    font-size: clamp(5px, 0.48vw, 8px);
+    font-weight: 750;
+    white-space: nowrap;
+  }
+
+  .phone-screen-search svg { color: #f36b2b; flex: 0 0 auto; }
+
+  .phone-screen-map {
+    position: relative;
+    height: 58%;
+    margin: 8% 0 6%;
+    border-radius: 7%;
+    background:
+      linear-gradient(rgba(147, 206, 213, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(147, 206, 213, 0.08) 1px, transparent 1px),
+      #123d4d;
+    background-size: 22% 22%;
+    overflow: hidden;
+  }
+
+  .phone-map-road,
+  .phone-map-route {
+    position: absolute;
+    display: block;
+    height: 2px;
+    transform-origin: left center;
+  }
+
+  .phone-map-road { width: 130%; background: rgba(195, 230, 228, 0.3); }
+  .phone-map-road-a { top: 45%; left: -12%; transform: rotate(-18deg); }
+  .phone-map-road-b { top: 18%; left: 32%; transform: rotate(72deg); }
+
+  .phone-map-route {
+    z-index: 2;
+    top: 62%;
+    left: 28%;
+    width: 52%;
+    height: 3px;
+    background: #f36b2b;
+    transform: rotate(-24deg);
+    box-shadow: 0 0 8px rgba(243, 107, 43, 0.7);
+  }
+
+  .phone-map-pin {
+    position: absolute;
+    z-index: 3;
+    width: 9%;
+    aspect-ratio: 1;
+    border: 2px solid #fff;
+    border-radius: 50% 50% 50% 0;
+    background: #f36b2b;
+    transform: rotate(-45deg);
+  }
+
+  .phone-map-pin-a { top: 26%; left: 23%; }
+  .phone-map-pin-b { right: 18%; bottom: 19%; }
+
+  .phone-screen-result {
+    position: relative;
+    z-index: 2;
+    padding: 6% 7%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 7%;
+    background: rgba(246, 250, 247, 0.96);
+    color: #173443;
+  }
+
+  .phone-screen-result small {
+    color: #a93609;
+    font-size: clamp(4px, 0.38vw, 6px);
+    font-weight: 850;
+    letter-spacing: 0.08em;
+  }
+
+  .phone-screen-result strong { font-size: clamp(5px, 0.48vw, 8px); }
+  .phone-screen-result span { color: #607984; font-size: clamp(4px, 0.36vw, 6px); }
+
   .visual-search-card,
   .visual-call-card {
     position: absolute;
